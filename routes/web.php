@@ -9,8 +9,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CheckoutController;
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    $products = Product::all();
+    return view('welcome',compact('products'));
+})->name('home');
 
 Route::get('/dashboard', function () {
     $products = Product::all();
@@ -28,12 +29,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.show');
     Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
     Route::get('/checkout', [BookingController::class, 'booking'])->name('booking');
-    // Route::get('/checkout', [BookingController::class, 'booking'])->name('booking');
-    Route::get('/products/{id}/checkout', [CheckoutController::class, 'process'])->name('products.checkouts');
-    Route::get('/payment/booking-{id_booking}-{id}', [CheckoutController::class, 'process'])->name('products.payment');
-    Route::get('/payment-success', function () {
-        return view('products.payment-success');
-    });
+    Route::post('/products/{id}/checkout', [CheckoutController::class, 'checkout'])->name('products.checkouts');
+    Route::get('/payment/booking/{id_booking}/{id}', [CheckoutController::class, 'process'])
+    ->name('products.payment');
+    Route::get('/midtrans/notification', [CheckoutController::class, 'handleNotification'])->name('midtrans.notification');
+
+    // Route::get('/payment-success', function () {
+    //     return view('products.payment-success');
+    // });
     // Route::post('/booking', [CheckoutController::class, 'checkout'])->name('booking');
 
 });

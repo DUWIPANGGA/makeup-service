@@ -54,14 +54,15 @@ class BookingController extends Controller
             'notes' => 'nullable|string',
         ]);
 
-        $book=Booking::create([
+        $booking=Booking::create([
             'user_id' => Auth::id(),
             'product_id' => $request->product_id,
             'booking_date' => $request->booking_date,
             'status' => 'pending',
             'notes' => $request->notes,
         ]);
-        return redirect()->route('products.payment',['id_booking' => $book->id,'id'=>$request->product_id])->with('success', 'Booking berhasil ditambahkan!');
+        return redirect()->route('products.payment', ['id_booking' => $booking->id, 'id' => $booking->product_id]);
+
     }
 
     public function show(Booking $booking)

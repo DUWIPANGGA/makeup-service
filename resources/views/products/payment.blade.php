@@ -15,34 +15,44 @@
 
 <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
 <script>
-    document.getElementById('pay-button').addEventListener('click', function () {
-        fetch("{{ route('products.checkouts') }}", {
-            method: "POST",
-            headers: {
-                "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                "Content-Type": "application/json",
+   document.getElementById('pay-button').addEventListener('click', function () {
+    console.log("Tombol Bayar diklik");
+
+    fetch("{{ route('products.checkouts', ['id' => $product->id]) }}", {
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": "{{ csrf_token() }}",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            product_id: "{{ $product->id }}",
+            total_price: "{{ $product->price }}"
+        }),
+    })
+    .then(response => {
+        console.log("Fetch response diterima:", response);
+        return response.json();
+    })
+    .then(data => {
+        console.log("Data dari server:", data);
+        snap.pay(data.snap_token, {
+            onSuccess: function(result) {
+                console.log("Transaksi sukses:", result);
+                window.location.href = "/payment-success";
             },
-            body: JSON.stringify({
-                product_id: "{{ $product->id }}",
-                total_price: "{{ $product->price }}"
-            }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            snap.pay(data.snap_token, {
-                onSuccess: function(result) {
-                    console.log("Transaksi sukses:", result);
-                    window.location.href = "/payment-success";
-                },
-                onPending: function(result) {
-                    console.log("Menunggu pembayaran:", result);
-                },
-                onError: function(result) {
-                    console.log("Transaksi gagal:", result);
-                }
-            });
+            onPending: function(result) {
+                console.log("Menunggu pembayaran:", result);
+            },
+            onError: function(result) {
+                console.log("Transaksi gagal:", result);
+            }
         });
+    })
+    .catch(error => {
+        console.error("Fetch error:", error);
     });
+});
+
 </script>
 
 @endsection
