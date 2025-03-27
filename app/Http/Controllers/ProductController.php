@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -23,22 +24,39 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'description' => 'nullable',
-            'price' => 'required|numeric',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric|min:0',
+            'picture' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        Product::create($request->all());
+        // Upload gambar jika ada
+        $picturePath = null;
+        if ($request->hasFile('picture')) {
+            $picturePath = $request->file('picture')->store('products', 'public');
+        }
 
-        return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan.');
+        Product::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'picture' => $picturePath,
+            'terjual' => 0,
+        ]);
+
+        return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan!');
     }
 
-    // Tampilkan satu produk
-    public function show(Product $product)
+    public function show($id)
     {
+        $product = Product::findOrFail($id);
         return view('products.show', compact('product'));
     }
-
+    public function checkout($id)
+    {
+        $product = Product::findOrFail($id);
+        return view('products.checkout', compact('product'));
+    }
     // Tampilkan form edit produk
     public function edit(Product $product)
     {
@@ -49,20 +67,36 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $request->validate([
-            'name' => 'required',
-            'description' => 'nullable',
-            'price' => 'required|numeric',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric|min:0',
+            'picture' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        $product->update($request->all());
+        // Upload gambar baru jika ada
+        if ($request->hasFile('picture')) {
+            if ($product->picture) {
+                Storage::disk('public')->delete($product->picture);
+            }
+            $product->picture = $request->file('picture')->store('products', 'public');
+        }
 
-        return redirect()->route('products.index')->with('success', 'Produk berhasil diperbarui.');
+        $product->update($request->except('picture'));
+
+        return redirect()->route('products.index')->with('success', 'Produk berhasil diperbarui!');
+    
     }
 
     // Hapus produk
     public function destroy(Product $product)
     {
+        if ($product->picture) {
+            Storage::disk('public')->delete($product->picture);
+        }
+        
         $product->delete();
-        return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus.');
+        return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus!');
+    
+
     }
 }

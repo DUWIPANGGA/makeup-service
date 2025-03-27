@@ -1,15 +1,20 @@
 <?php
 
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RouteController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CheckoutController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $products = Product::all();
+    return view('dashboard',compact('products'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -17,6 +22,20 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::resource('products', ProductController::class);
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::resource('bookings', BookingController::class);
+    Route::get('/list-products', [RouteController::class,'listProducts'])->name('list-products');
+    Route::get('/checkout/{id}', [ProductController::class, 'checkout'])->name('products.checkout');
+    Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.show');
+    Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+    Route::get('/checkout', [BookingController::class, 'booking'])->name('booking');
+    // Route::get('/checkout', [BookingController::class, 'booking'])->name('booking');
+    Route::get('/products/{id}/checkout', [CheckoutController::class, 'process'])->name('products.checkouts');
+    Route::get('/payment/booking-{id_booking}-{id}', [CheckoutController::class, 'process'])->name('products.payment');
+    Route::get('/payment-success', function () {
+        return view('products.payment-success');
+    });
+    // Route::post('/booking', [CheckoutController::class, 'checkout'])->name('booking');
+
 });
 
-require __DIR__.'/auth.php';
+require __DIR__.'/auth.php';    
