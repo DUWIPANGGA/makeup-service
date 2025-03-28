@@ -24,6 +24,11 @@ class BookingController extends Controller
         $products = Product::all();
         return view('bookings.create', compact('products'));
     }
+    public function user()
+    {
+        $bookings = Booking::all()->where('user_id','=',Auth::user()->id);
+        return view('bookings.user-booking', compact('bookings'));
+    }
 
     /**
      * Simpan booking baru
@@ -36,15 +41,17 @@ class BookingController extends Controller
             'notes' => 'nullable|string',
         ]);
 
-        Booking::create([
+        $booking=Booking::create([
             'user_id' => Auth::id(),
             'product_id' => $request->product_id,
-            'booking_date' => $request->booking_date,
+'booking_date' => $request->booking_date.' '.$request->booking_time,
             'status' => 'pending',
             'notes' => $request->notes,
         ]);
 
-        return redirect()->route('bookings.index')->with('success', 'Booking berhasil ditambahkan!');
+        return redirect()->route('products.checkout', ['id' => $booking->id])
+        ->with('success', 'Booking berhasil ditambahkan!');
+    
     }
     public function booking(Request $request)
     {
@@ -61,7 +68,7 @@ class BookingController extends Controller
             'status' => 'pending',
             'notes' => $request->notes,
         ]);
-        return redirect()->route('products.payment', ['id_booking' => $booking->id, 'id' => $booking->product_id]);
+        return redirect()->route('products.payment', ['id' => $booking->id]);
 
     }
 

@@ -112,9 +112,9 @@
                 
                 <!-- Action Buttons -->
                 <div class="mt-8 space-y-4" data-aos="fade-up" data-aos-delay="300">
-                    <a href="{{ route('products.checkout', $product->id) }}" 
+                    <a href="{{ route('bookings.create', $product->id) }}" 
                        class="block w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white text-center py-3 px-4 rounded-xl font-semibold shadow-lg hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-[1.02]">
-                       🛒 Beli Sekarang
+                       🛒 Booking Sekarang
                     </a>
                     <a href="{{ route('products.index') }}" 
                        class="block w-full bg-white border border-gray-300 text-gray-700 text-center py-3 px-4 rounded-xl font-medium hover:bg-gray-50 transition-all duration-300 transform hover:scale-[1.02]">

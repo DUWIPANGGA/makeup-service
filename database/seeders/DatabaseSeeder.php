@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'dimas',
             'email' => 'dimas@example.com',
             'password' => 'dimas@example.com',
-            
+            'telepon' => '08971444573',
         ]);
     }
 }

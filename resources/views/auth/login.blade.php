@@ -1,119 +1,325 @@
-<x-guest-layout>
-    <!-- Background Gradient -->
-    <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 to-purple-100 p-4">
-        <!-- Session Status -->
-        <x-auth-session-status class="mb-4" :status="session('status')" />
-
-        <!-- Login Card -->
-        <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden transition-all duration-500 hover:shadow-2xl" data-aos="zoom-in">
-            <!-- Card Header with Gradient -->
-            <div class="bg-gradient-to-r from-pink-500 to-purple-600 p-6 text-center">
-                <h2 class="text-3xl font-bold text-white">Welcome Back</h2>
-                <p class="text-pink-100 mt-2">Sign in to your account</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - LK Makeup Artist</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #ec4899;
+            --primary-dark: #db2777;
+            --secondary: #8b5cf6;
+            --secondary-dark: #7c3aed;
+            --light: #fdf2f8;
+            --dark: #1f2937;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f9a8d4 0%, #c4b5fd 50%, #818cf8 100%);
+            background-size: 200% 200%;
+            animation: gradient 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            margin: 0;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            perspective: 1000px;
+        }
+        
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            padding: 2.5rem;
+            transform-style: preserve-3d;
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+        }
+        
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .logo img {
+            height: 60px;
+            margin-bottom: 1rem;
+        }
+        
+        .logo h1 {
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin: 0;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .input-field {
+            position: relative;
+        }
+        
+        .input-field i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 1rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            background-color: #f9fafb;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
+            background-color: white;
+        }
+        
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-login:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.15);
+        }
+        
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+        
+        .remember-me input {
+            margin-right: 8px;
+            accent-color: var(--primary);
+        }
+        
+        .forgot-password {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .forgot-password:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+        
+        .register-link {
+            text-align: center;
+            margin-top: 2rem;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        
+        .register-link a {
+            color: var(--primary);
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .register-link a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+        
+        .error-message {
+            color: #ef4444;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+        
+        .success-message {
+            background-color: #ecfdf5;
+            color: #059669;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+        }
+        
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <!-- Logo -->
+            <div class="logo">
+                <h1>LK Makeup Artist</h1>
             </div>
 
-            <!-- Card Body -->
-            <div class="p-8">
-                <form method="POST" action="{{ route('login') }}">
-                    @csrf
-
-                    <!-- Email Input with Floating Label -->
-                    <div class="relative mb-6" data-aos="fade-up" data-aos-delay="100">
-                        <x-text-input 
-                            id="email" 
-                            class="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 transition-all duration-300 peer" 
+            <!-- Session Status -->
+            @if(session('status'))
+            <div class="success-message">
+                {{ session('status') }}
+            </div>
+            @endif
+            
+            <form method="POST" action="{{ route('login') }}">
+                @csrf
+                
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <div class="input-field">
+                        <i class="fas fa-envelope"></i>
+                        <input 
                             type="email" 
+                            id="email" 
                             name="email" 
-                            :value="old('email')" 
+                            class="form-control" 
+                            value="{{ old('email') }}" 
                             required 
                             autofocus 
-                            autocomplete="username" 
-                            placeholder=" "
-                        />
-                        <x-input-label 
-                            for="email" 
-                            class="absolute left-4 top-3 px-1 bg-white text-gray-500 transition-all duration-300 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-pink-600 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base" 
-                            :value="__('Email')" 
-                        />
-                        <x-input-error :messages="$errors->get('email')" class="mt-2 text-red-500 text-sm" />
+                            placeholder="your@email.com"
+                        >
                     </div>
-
-                    <!-- Password Input with Floating Label -->
-                    <div class="relative mb-6" data-aos="fade-up" data-aos-delay="200">
-                        <x-text-input 
-                            id="password" 
-                            class="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 transition-all duration-300 peer" 
-                            type="password" 
-                            name="password" 
-                            required 
-                            autocomplete="current-password" 
-                            placeholder=" "
-                        />
-                        <x-input-label 
-                            for="password" 
-                            class="absolute left-4 top-3 px-1 bg-white text-gray-500 transition-all duration-300 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-pink-600 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base" 
-                            :value="__('Password')" 
-                        />
-                        <x-input-error :messages="$errors->get('password')" class="mt-2 text-red-500 text-sm" />
-                    </div>
-
-                    <!-- Remember Me & Forgot Password -->
-                    <div class="flex items-center justify-between mb-6" data-aos="fade-up" data-aos-delay="300">
-                        <label for="remember_me" class="inline-flex items-center cursor-pointer">
-                            <input 
-                                id="remember_me" 
-                                type="checkbox" 
-                                class="rounded border-gray-300 text-pink-600 shadow-sm focus:ring-pink-500 transition duration-150 ease-in-out" 
-                                name="remember"
-                            >
-                            <span class="ms-2 text-sm text-gray-600 hover:text-gray-800 transition-colors duration-300">
-                                {{ __('Remember me') }}
-                            </span>
-                        </label>
-
-                        @if (Route::has('password.request'))
-                            <a 
-                                class="text-sm text-pink-600 hover:text-pink-800 underline transition-colors duration-300" 
-                                href="{{ route('password.request') }}"
-                            >
-                                {{ __('Forgot your password?') }}
-                            </a>
-                        @endif
-                    </div>
-
-                    <!-- Login Button -->
-                    <div data-aos="fade-up" data-aos-delay="400">
-                        <x-primary-button class="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white py-3 px-4 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
-                            {{ __('Log in') }}
-                            <svg class="w-5 h-5 ml-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
-                            </svg>
-                        </x-primary-button>
-                    </div>
-                </form>
-
-                <!-- Register Link -->
-                @if (Route::has('register'))
-                <div class="mt-6 text-center" data-aos="fade-up" data-aos-delay="500">
-                    <p class="text-gray-600">
-                        Don't have an account?
-                        <a href="{{ route('register') }}" class="text-pink-600 hover:text-pink-800 font-medium underline transition-colors duration-300">
-                            Register
-                        </a>
-                    </p>
+                    @error('email')
+                        <span class="error-message">{{ $message }}</span>
+                    @enderror
                 </div>
-                @endif
+                
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-field">
+                        <i class="fas fa-lock"></i>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="form-control" 
+                            required 
+                            placeholder="••••••••"
+                        >
+                    </div>
+                    @error('password')
+                        <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
+                
+                <!-- Remember & Forgot Password -->
+                <div class="form-footer">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember_me" name="remember">
+                        <label for="remember_me">Remember me</label>
+                    </div>
+                    @if (Route::has('password.request'))
+                    <a href="{{ route('password.request') }}" class="forgot-password">
+                        Forgot password?
+                    </a>
+                    @endif
+                </div>
+                
+                <!-- Login Button -->
+                <button type="submit" class="btn-login">
+                    <i class="fas fa-sign-in-alt mr-2"></i> Log In
+                </button>
+            </form>
+            
+            <!-- Register Link -->
+            @if (Route::has('register'))
+            <div class="register-link">
+                Don't have an account? <a href="{{ route('register') }}">Register</a>
             </div>
+            @endif
         </div>
     </div>
 
-    <!-- AOS Animation Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
-        AOS.init({
-            duration: 800,
-            once: true,
-            easing: 'ease-out-cubic'
+        // Add simple animation to form inputs on focus
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.querySelector('i').style.color = '#ec4899';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.querySelector('i').style.color = '#9ca3af';
+            });
         });
     </script>
-</x-guest-layout>
+</body>
+</html>

@@ -14,9 +14,10 @@ use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Controller
 {
-    public function process(Request $request, $id_booking, $id)
+    public function process(Request $request, $id)
     {
-        $product = Product::findOrFail($id);
+        $booking = Booking::findOrFail($id);
+        $product = Product::findOrFail($booking->product_id);
         Config::$serverKey = config('midtrans.server_key');
         Config::$isProduction = config('midtrans.is_production');
         Config::$isSanitized = true;
@@ -49,54 +50,57 @@ class CheckoutController extends Controller
         ];
 
         $snapToken = Snap::getSnapToken($transaction);
+        $booking = Booking::find($id);
 
-        return view('products.payment', compact('snapToken', 'product'));
+        return view('products.payment', compact('snapToken', 'product', 'booking'));
     }
     public function checkout(Request $request, $id)
-{
-    $product = Product::findOrFail($id);
+    {
+        // $booking = Booking::findOrFail($request->id);
+        $product = Product::findOrFail($request->product_id);
 
-    Config::$serverKey = config('midtrans.server_key');
-    Config::$isProduction = config('midtrans.is_production');
-    Config::$isSanitized = true;
-    Config::$is3ds = true;
+        Config::$serverKey = config('midtrans.server_key');
+        Config::$isProduction = config('midtrans.is_production');
+        Config::$isSanitized = true;
+        Config::$is3ds = true;
 
-    $transaction_details = [
-        'order_id' => 'ORDER-' . uniqid(),
-        'gross_amount' => $product->price
-    ];
+        $transaction_details = [
+            'order_id' => 'ORDER-' . uniqid(),
+            'gross_amount' => $product->price
+        ];
 
-    $customer_details = [
-        'first_name' => Auth::user()->name ?? 'Guest',
-        'email' => Auth::user()->email ?? 'guest@example.com',
-        'phone' => Auth::user()->phone ?? '081234567890',
-    ];
+        $customer_details = [
+            'first_name' => Auth::user()->name ?? 'Guest',
+            'email' => Auth::user()->email ?? 'guest@example.com',
+            'phone' => Auth::user()->phone ?? '081234567890',
+        ];
 
-    $item_details = [
-        [
-            'id' => $product->id,
-            'price' => $product->price,
-            'quantity' => 1,
-            'name' => $product->name
-        ]
-    ];
+        $item_details = [
+            [
+                'id' => $request->id,
+                'price' => $product->price,
+                'quantity' => 1,
+                'name' => $product->name
+            ]
+        ];
 
-    $transaction = [
-        'transaction_details' => $transaction_details,
-        'customer_details' => $customer_details,
-        'item_details' => $item_details
-    ];
+        $transaction = [
+            'transaction_details' => $transaction_details,
+            'customer_details' => $customer_details,
+            'item_details' => $item_details
+        ];
 
-    $snapToken = Snap::getSnapToken($transaction);
+        $snapToken = Snap::getSnapToken($transaction);
 
-    return response()->json(['snap_token' => $snapToken]);
-}
-public function handleNotification(Request $request){
-    Config::$serverKey = config('midtrans.server_key');
-    Config::$isProduction = config('midtrans.is_production');
-    Config::$isSanitized = true;
-    Config::$is3ds = true;
-    $notif = new Notification();
+        return response()->json(['snap_token' => $snapToken]);
+    }
+    public function handleNotification(Request $request)
+    {
+        Config::$serverKey = config('midtrans.server_key');
+        Config::$isProduction = config('midtrans.is_production');
+        Config::$isSanitized = true;
+        Config::$is3ds = true;
+        $notif = new Notification();
 
         Log::info('Midtrans Notification:', $request->all());
         $transactionStatus = $notif->transaction_status;
@@ -119,6 +123,15 @@ public function handleNotification(Request $request){
         }
 
         return response()->json(['message' => 'Notification processed']);
-}
-
+    }
+    public function success($id)
+    {
+        // dd($id);
+        $booking = Booking::where('id',$id)->first();
+        // dd($booking);
+        $product = Product::findOrFail($booking->product_id);
+        $booking->status = 'confirmed';
+        $booking->save();
+        return view('products.payment-success', compact(['booking', 'product']));
+    }
 }

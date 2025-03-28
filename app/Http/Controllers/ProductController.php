@@ -1,8 +1,10 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -52,10 +54,11 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         return view('products.show', compact('product'));
     }
-    public function checkout($id)
+    public function checkout(Request $request,$id)
     {
-        $product = Product::findOrFail($id);
-        return view('products.checkout', compact('product'));
+        $booking = Booking::findOrFail($id);
+        $product = Product::findOrfail($booking->product_id);
+        return view('products.checkout', compact(['booking','product']));
     }
     // Tampilkan form edit produk
     public function edit(Product $product)

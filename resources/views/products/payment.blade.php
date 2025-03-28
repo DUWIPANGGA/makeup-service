@@ -38,7 +38,10 @@
         snap.pay(data.snap_token, {
             onSuccess: function(result) {
                 console.log("Transaksi sukses:", result);
-                window.location.href = "/payment-success";
+                var product = @json($product);
+    var booking = @json($booking);
+
+    window.location.href = `/payment-success?product=${encodeURIComponent(product)}&booking_code=${encodeURIComponent(booking)}`;
             },
             onPending: function(result) {
                 console.log("Menunggu pembayaran:", result);

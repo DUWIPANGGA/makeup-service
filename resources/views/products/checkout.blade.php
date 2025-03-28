@@ -2,119 +2,147 @@
 
 @section('content')
 <div class="min-h-screen bg-gradient-to-br from-pink-50 to-purple-100 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-5xl mx-auto">
-        <!-- Error Messages -->
-        @if ($errors->any())
-        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-8 rounded-lg shadow-md" data-aos="fade-down">
-            <div class="font-bold mb-2">Perhatikan kesalahan berikut:</div>
-            <ul class="list-disc pl-5 space-y-1">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
-
-        <div class="flex flex-col lg:flex-row gap-8" data-aos="fade-up">
-            <!-- Product Info Card -->
-            <div class="lg:w-2/5">
-                <div class="bg-white rounded-2xl shadow-xl overflow-hidden transition-all duration-500 hover:shadow-2xl h-full">
-                    <div class="relative group overflow-hidden h-64">
+    <div class="max-w-4xl mx-auto">
+        <!-- Payment Card -->
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden" data-aos="fade-up">
+            <!-- Product Info Section -->
+            <div class="flex flex-col md:flex-row">
+                <!-- Product Image -->
+                <div class="md:w-2/5 bg-gradient-to-br from-pink-100 to-purple-100 p-8 flex items-center justify-center">
+                    <div class="relative group overflow-hidden rounded-xl">
                         <img src="{{ asset('storage/' . $product->picture) }}" alt="{{ $product->name }}" 
-                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    </div>
-                    
-                    <div class="p-6">
-                        <h2 class="text-2xl font-bold text-gray-900 mb-2">{{ $product->name }}</h2>
-                        <div class="flex items-center justify-between mt-4">
-                            <span class="text-3xl font-bold text-pink-600">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
-                            <span class="px-3 py-1 rounded-full text-sm font-medium {{ $product->stock > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                {{ $product->stock > 0 ? 'Tersedia' : 'Habis' }}
-                            </span>
-                        </div>
+                             class="w-full h-64 object-contain transform transition duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Booking Form -->
-            <div class="lg:w-3/5">
-                <div class="bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl shadow-xl p-8 text-white">
-                    <h2 class="text-3xl font-bold mb-6 flex items-center">
-                        <svg class="w-8 h-8 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                
+                <!-- Payment Details -->
+                <div class="md:w-3/5 p-8">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2">Pembayaran {{ $product->name }}</h2>
+                    <div class="flex items-center mb-6">
+                        <div class="flex text-yellow-400">
+                            @for($i = 0; $i < 5; $i++)
+                                <svg class="w-5 h-5" fill="{{ $i < 4 ? 'currentColor' : 'none' }}" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+                                </svg>
+                            @endfor
+                        </div>
+                        <span class="ml-2 text-gray-600">({{ rand(5, 50) }} ulasan)</span>
+                    </div>
+                    
+                    <!-- Product Description -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Deskripsi Produk</h3>
+                        <p class="text-gray-700 leading-relaxed">{{ $product->description }}</p>
+                    </div>
+                    
+                    <!-- Payment Summary -->
+                    <div class="bg-gray-50 rounded-xl p-4 mb-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3">Ringkasan Pembayaran</h3>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-600">Harga Produk</span>
+                            <span class="font-medium">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                        </div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-600">Biaya Admin</span>
+                            <span class="font-medium">Rp 0</span>
+                        </div>
+                        <div class="border-t border-gray-200 my-2"></div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-900 font-bold">Total Pembayaran</span>
+                            <span class="text-pink-600 font-bold text-xl">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                        </div>
+                    </div>
+                    @if($booking->status !== 'confirmed')
+                    <!-- Payment Button -->
+                    <button id="pay-button" 
+                            class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-4 px-6 rounded-xl font-bold hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
                         </svg>
-                        Form Booking
-                    </h2>
+                        Bayar Sekarang
+                    </button>
+                    @else
+                    <button 
+                            class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-4 px-6 rounded-xl font-bold hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                        </svg>
+                        Sudah dibayar
+                    </button>
 
-                    <form action="{{ route('booking') }}" method="GET" class="space-y-6">
-                        @csrf
-                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-
-                        <!-- Name Field -->
-                        <div class="space-y-2" data-aos="fade-up" data-aos-delay="100">
-                            <label class="block text-lg font-medium">Nama Lengkap</label>
-                            <input type="text" name="name" 
-                                   class="w-full px-4 py-3 rounded-xl text-gray-900 focus:ring-2 focus:ring-pink-300 focus:border-transparent transition-all duration-300"
-                                   placeholder="Masukkan nama lengkap" required>
-                        </div>
-
-                        <!-- Phone Field -->
-                        <div class="space-y-2" data-aos="fade-up" data-aos-delay="150">
-                            <label class="block text-lg font-medium">Nomor WhatsApp</label>
-                            <input type="tel" name="phone" 
-                                   class="w-full px-4 py-3 rounded-xl text-gray-900 focus:ring-2 focus:ring-pink-300 focus:border-transparent transition-all duration-300"
-                                   placeholder="Contoh: 081234567890" required>
-                        </div>
-
-                        <!-- Address Field -->
-                        <div class="space-y-2" data-aos="fade-up" data-aos-delay="200">
-                            <label class="block text-lg font-medium">Alamat Lengkap</label>
-                            <textarea name="address" rows="3"
-                                      class="w-full px-4 py-3 rounded-xl text-gray-900 focus:ring-2 focus:ring-pink-300 focus:border-transparent transition-all duration-300"
-                                      placeholder="Masukkan alamat lengkap" required></textarea>
-                        </div>
-
-                        <!-- Notes Field -->
-                        <div class="space-y-2" data-aos="fade-up" data-aos-delay="250">
-                            <label class="block text-lg font-medium">Catatan Tambahan</label>
-                            <textarea name="notes" rows="2"
-                                      class="w-full px-4 py-3 rounded-xl text-gray-900 focus:ring-2 focus:ring-pink-300 focus:border-transparent transition-all duration-300"
-                                      placeholder="Contoh: Warna favorit, ukuran, dll"></textarea>
-                        </div>
-
-                        <!-- Booking Date Field -->
-                        <div class="space-y-2" data-aos="fade-up" data-aos-delay="300">
-                            <label class="block text-lg font-medium">Tanggal Booking</label>
-                            <input type="date" name="booking_date" 
-                                   class="w-full px-4 py-3 rounded-xl text-gray-900 focus:ring-2 focus:ring-pink-300 focus:border-transparent transition-all duration-300"
-                                   required>
-                        </div>
-
-                        <!-- Payment Buttons -->
-                        <div class="pt-4 space-y-4" data-aos="fade-up" data-aos-delay="350">
-                            <button type="submit" name="payment_type" value="dp" 
-                                    class="w-full bg-white text-pink-600 font-bold py-4 px-6 rounded-xl hover:bg-gray-100 transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center">
-                                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                                Booking DP - Rp {{ number_format($product->price / 2, 0, ',', '.') }}
-                            </button>
-
-                            <button type="submit" name="payment_type" value="full" 
-                                    class="w-full bg-pink-700 text-white font-bold py-4 px-6 rounded-xl hover:bg-pink-800 transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center">
-                                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                                </svg>
-                                Bayar Penuh - Rp {{ number_format($product->price, 0, ',', '.') }}
-                            </button>
-                        </div>
-                    </form>
+                    @endif
+                    <!-- Payment Methods Info -->
+                    <div class="mt-4 text-center text-sm text-gray-500">
+                        <p>Metode pembayaran: Transfer Bank, E-Wallet, Kartu Kredit</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Midtrans SDK -->
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
+<script>
+    document.getElementById('pay-button').addEventListener('click', function () {
+        // Show loading state
+        const button = this;
+        button.innerHTML = `
+            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Memproses pembayaran...
+        `;
+        button.disabled = true;
+
+        fetch("{{ route('products.checkouts', ['id' => $booking->id]) }}", {
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                id: "{{ $booking->id }}",
+                product_id: "{{ $product->id }}",
+                total_price: "{{ $product->price }}"
+            }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            snap.pay(data.snap_token, {
+                onSuccess: function(result) {
+                    window.location.href = "{{ route('payment.success',$booking->id) }}";
+                },
+                onPending: function(result) {
+                    alert('payment pending')
+                },
+                onError: function(result) {
+                    alert('payment error')
+                },
+                onClose: function() {
+                    button.innerHTML = `Bayar Sekarang`;
+                    button.disabled = false;
+                }
+            });
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Terjadi kesalahan: " + error.message);
+            button.innerHTML = `Bayar Sekarang`;
+            button.disabled = false;
+        });
+    });
+</script>
 
 <!-- AOS Animation Library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
@@ -124,8 +152,5 @@
         once: true,
         easing: 'ease-out-cubic'
     });
-    
-    // Set minimum date to today
-    document.querySelector('input[name="booking_date"]').min = new Date().toISOString().split('T')[0];
 </script>
 @endsection
