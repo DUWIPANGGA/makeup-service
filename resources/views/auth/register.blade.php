@@ -261,20 +261,20 @@
                     @enderror
                 </div>
                 <div class="form-group">
-    <label for="phone_number">Nomor Telepon</label>
+    <label for="telepon">Nomor Telepon</label>
     <div class="input-field">
         <i class="fas fa-phone"></i>
         <input 
             type="text" 
-            id="phone_number" 
+            id="telepon" 
             name="telepon" 
             class="form-control" 
-            value="{{ old('phone_number') }}" 
+            value="{{ old('telepon') }}" 
             required 
             placeholder="08xxxxxxxxxx"
         >
     </div>
-    @error('phone_number')
+    @error('telepon')
         <span class="error-message">{{ $message }}</span>
     @enderror
 </div>

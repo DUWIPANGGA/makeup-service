@@ -23,15 +23,18 @@
             </div>
 
             <!-- Text with staggered animation -->
-            <div class="w-full md:w-1/2 text-center md:text-left mt-10 md:mt-0 md:pl-10">
-                <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-4" data-aos="fade-left" data-aos-delay="200"
+            <div class="w-full md:w-1/1.5 text-left md:text-left mt-10 md:mt-0 md:pl-10">
+                <h2 class="text-5xl md:text-6xl font-bold text-gray-900 mb-4" data-aos="fade-left" data-aos-delay="200"
+                style="font-family: 'Playfair Display', serif;"
                     data-aos-easing="ease-out-back">
-                    Temukan Produk <span
-                        class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-600">Favoritmu</span>
-                </h1>
+                    Selamat Datang di <br><p
+                        class=" text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-600" style="font-family: 'Playfair Display', serif;">LK MAKEUP ARTIST</p>
+            </h2>
+                <small style="font-family: 'Playfair Display', serif;">- Laely Khiyaroh</small>
+                <br>
                 <p class="text-xl text-gray-700 mb-8" data-aos="fade-left" data-aos-delay="400"
                     data-aos-easing="ease-out-back">
-                    Belanja lebih mudah, cepat, dan terpercaya.
+                    MUA adalah seorang profesional yang memiliki keahlian khusus dalam seni merias wajah, menciptakan tampilan yang indah dan berkarakter sesuai kebutuhan klien.
                 </p>
                 <div data-aos="fade-left" data-aos-delay="600">
                     <a href="#"

@@ -13,8 +13,6 @@
             </p>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <!-- Contact Information -->
             <div class="bg-white rounded-2xl shadow-xl p-8" data-aos="fade-right">
                 <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
                     <svg class="w-6 h-6 mr-2 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -35,7 +33,7 @@
                         </div>
                         <div class="ml-4">
                             <h3 class="text-lg font-semibold text-gray-900">Alamat</h3>
-                            <p class="text-gray-600 mt-1">Jl. Contoh No. 123, Jakarta Selatan, Indonesia</p>
+                            <p class="text-gray-600 mt-1">Desa langut, Kec. lohbener, Kabupaten Indramayu, Jawa Barat 45252</p>
                             <a href="#" class="inline-block mt-2 text-pink-600 hover:text-pink-700 transition-colors duration-300">
                                 Lihat di Peta →
                             </a>
@@ -51,7 +49,7 @@
                         </div>
                         <div class="ml-4">
                             <h3 class="text-lg font-semibold text-gray-900">Email</h3>
-                            <p class="text-gray-600 mt-1">info@example.com</p>
+                            <p class="text-gray-600 mt-1">lk_makeupartist@gmail.com</p>
                             <a href="mailto:info@example.com" class="inline-block mt-2 text-pink-600 hover:text-pink-700 transition-colors duration-300">
                                 Kirim Email →
                             </a>
@@ -67,7 +65,7 @@
                         </div>
                         <div class="ml-4">
                             <h3 class="text-lg font-semibold text-gray-900">Telepon/WhatsApp</h3>
-                            <p class="text-gray-600 mt-1">+62 123 4567 890</p>
+                            <p class="text-gray-600 mt-1">+62 831 6229 8682</p>
                             <a href="https://wa.me/621234567890" class="inline-block mt-2 text-pink-600 hover:text-pink-700 transition-colors duration-300">
                                 Hubungi via WhatsApp →
                             </a>
@@ -113,58 +111,9 @@
                 </div>
             </div>
 
-            <!-- Contact Form -->
-            <div class="bg-white rounded-2xl shadow-xl p-8" data-aos="fade-left">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                    <svg class="w-6 h-6 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                    </svg>
-                    Kirim Pesan
-                </h2>
-
-                <form action="#" method="POST" class="space-y-6">
-                    @csrf
-                    <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-                        <input type="text" id="name" name="name" 
-                               class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-300"
-                               placeholder="Masukkan nama Anda" required>
-                    </div>
-
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Alamat Email</label>
-                        <input type="email" id="email" name="email" 
-                               class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-300"
-                               placeholder="email@contoh.com" required>
-                    </div>
-
-                    <div>
-                        <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">Subjek</label>
-                        <input type="text" id="subject" name="subject" 
-                               class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-300"
-                               placeholder="Subjek pesan Anda" required>
-                    </div>
-
-                    <div>
-                        <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Pesan</label>
-                        <textarea id="message" name="message" rows="5" 
-                                  class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-300"
-                                  placeholder="Tulis pesan Anda di sini..." required></textarea>
-                    </div>
-
-                    <div>
-                        <button type="submit" 
-                                class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-xl">
-                            Kirim Pesan
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
         <!-- Map Section -->
         <div class="mt-12 bg-white rounded-2xl shadow-xl overflow-hidden" data-aos="fade-up">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260322283!2d106.8195613506394!3d-6.194741395493371!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5390917b759%3A0x6b45e67356080477!2sMonumen%20Nasional!5e0!3m2!1sen!2sid!4v1620000000000!5m2!1sen!2sid" 
+            <iframe src="https://www.google.com/maps/embed/v1/place?q=desa%20langut%2C%20kec.loh%20bener%20kabupaten%20indramayu&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8" 
                     width="100%" 
                     height="450" 
                     style="border:0;" 
